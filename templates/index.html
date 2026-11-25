@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AdalHelp AI — A global AI-powered support platform.">
+    <meta name="description" content="AdalHelp AI — Global AI support platform">
     <title>AdalHelp AI — You're Not Alone</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
@@ -11,26 +11,18 @@
 
 <header class="navbar">
     <a href="/" class="logo">AdalHelp<span>AI</span></a>
-
     <nav>
         <a href="#features">Features</a>
         <a href="#about">About</a>
     </nav>
-
     <button id="languageButton">EN</button>
 </header>
 
 <main>
     <section class="hero">
         <div class="tag">✦ AI SUPPORT PLATFORM</div>
-
         <h1>You are not alone.</h1>
-
-        <p>
-            A safe space to talk, learn, share and find support.
-            Powered by artificial intelligence.
-        </p>
-
+        <p>A space to talk, learn, share and find support.</p>
         <div class="hero-buttons">
             <a href="#features" class="primary-button">Get started →</a>
             <a href="#about" class="secondary-button">Learn more</a>
@@ -45,8 +37,9 @@
                 <div class="card-icon">✦</div>
                 <h3>AI Assistant</h3>
                 <p>Talk with an AI assistant anytime.</p>
-                <button onclick="openAI()">Start conversation →</button>
-            </article>
+<button onclick="document.getElementById('aiChat').hidden=false; document.getElementById('features').hidden=true; document.querySelector('.hero').hidden=true;">
+Start conversation →
+</button>            </article>
 
             <article class="card">
                 <div class="card-icon">☷</div>
@@ -64,12 +57,38 @@
         </div>
     </section>
 
+    <section id="aiChat" class="about" hidden>
+        <h2>✦ AdalHelp AI</h2>
+        <p>Your AI support assistant</p>
+
+        <div id="chatMessages"
+             style="background:#111827;padding:16px;border-radius:14px;min-height:250px;max-height:400px;overflow-y:auto;margin:20px 0;">
+            <p><strong>AdalHelp AI:</strong> Hello! How can I help you today?</p>
+        </div>
+
+        <form id="chatForm" style="display:flex;gap:8px;">
+            <input
+                id="chatInput"
+                type="text"
+                maxlength="4000"
+                placeholder="Write your message..."
+                required
+                style="flex:1;min-width:0;padding:14px;border-radius:10px;border:1px solid #444;background:#111827;color:white;"
+            >
+            <button type="submit">Send</button>
+        </form>
+
+        <p id="chatStatus" aria-live="polite"></p>
+        <button onclick="closeAI()">← Back</button>
+    </section>
+
     <section id="about" class="about">
         <h2>About AdalHelp AI</h2>
         <p>
             Our mission is to make helpful information and
             supportive conversations accessible to everyone.
         </p>
+        <p>AdalHelp AI is not a replacement for professional medical or mental health care.</p>
     </section>
 </main>
 

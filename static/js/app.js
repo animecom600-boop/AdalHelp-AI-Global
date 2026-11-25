@@ -1,98 +1,55 @@
-const translations = {
+let currentLanguage = "en";
+
+const chatTexts = {
     en: {
-        features: "Features",
-        about: "About",
-        tag: "✦ AI SUPPORT PLATFORM",
-        title: "You are not alone.",
-        description: "A safe space to talk, learn, share and find support. Powered by artificial intelligence.",
-        start: "Get started →",
-        learn: "Learn more",
-        section: "Everything you need",
-        ai: "AI Assistant",
-        aiText: "Talk with an AI assistant anytime.",
-        community: "Community",
-        communityText: "Share thoughts and connect with others.",
-        knowledge: "Knowledge",
-        knowledgeText: "Discover useful information and resources.",
-        aboutTitle: "About AdalHelp AI",
-        aboutText: "Our mission is to make helpful information and supportive conversations accessible to everyone."
+        welcome: "Hello! I'm AdalHelp AI. How can I help you?",
+        placeholder: "Write your message...",
+        send: "Send",
+        thinking: "AI is thinking...",
+        error: "Something went wrong. Please try again.",
+        empty: "Please write a message.",
+        back: "← Back",
+        community: "Community chat is coming soon!"
     },
     ru: {
-        features: "Возможности",
-        about: "О проекте",
-        tag: "✦ ПЛАТФОРМА AI-ПОДДЕРЖКИ",
-        title: "Ты не один.",
-        description: "Безопасное пространство для общения, обучения и поддержки с помощью искусственного интеллекта.",
-        start: "Начать →",
-        learn: "Подробнее",
-        section: "Всё необходимое",
-        ai: "AI-помощник",
-        aiText: "Общайся с AI-помощником в любое время.",
-        community: "Сообщество",
-        communityText: "Делись мыслями и общайся с другими.",
-        knowledge: "Знания",
-        knowledgeText: "Изучай полезную информацию и ресурсы.",
-        aboutTitle: "О AdalHelp AI",
-        aboutText: "Наша цель — сделать полезную информацию и поддержку доступными каждому."
+        welcome: "Привет! Я AdalHelp AI. Чем могу помочь?",
+        placeholder: "Напишите сообщение...",
+        send: "Отправить",
+        thinking: "AI думает...",
+        error: "Ошибка. Попробуйте ещё раз.",
+        empty: "Введите сообщение.",
+        back: "← Назад",
+        community: "Чат сообщества скоро появится!"
     },
     kz: {
-        features: "Мүмкіндіктер",
-        about: "Жоба туралы",
-        tag: "✦ AI ҚОЛДАУ ПЛАТФОРМАСЫ",
-        title: "Сен жалғыз емессің.",
-        description: "Сөйлесуге, үйренуге және қолдау табуға арналған қауіпсіз кеңістік.",
-        start: "Бастау →",
-        learn: "Толығырақ",
-        section: "Саған қажетті мүмкіндіктер",
-        ai: "AI көмекші",
-        aiText: "AI көмекшімен кез келген уақытта сөйлес.",
-        community: "Қауымдастық",
-        communityText: "Ойларыңмен бөлісіп, басқалармен пікірлес.",
-        knowledge: "Білім",
-        knowledgeText: "Пайдалы ақпараттар мен ресурстарды зертте.",
-        aboutTitle: "AdalHelp AI туралы",
-        aboutText: "Біздің мақсатымыз — пайдалы ақпарат пен қолдауды баршаға қолжетімді ету."
+        welcome: "Сәлем! Мен AdalHelp AI көмекшісімін. Қалай көмектесе аламын?",
+        placeholder: "Хабарламаңызды жазыңыз...",
+        send: "Жіберу",
+        thinking: "AI ойланып жатыр...",
+        error: "Қате орын алды. Қайталап көріңіз.",
+        empty: "Хабарлама жазыңыз.",
+        back: "← Артқа",
+        community: "Қауымдастық чаты жақында ашылады!"
     }
 };
 
-let currentLanguage = "en";
-
-function changeLanguage() {
-    const languages = ["en", "ru", "kz"];
-    const currentIndex = languages.indexOf(currentLanguage);
-    currentLanguage = languages[(currentIndex + 1) % languages.length];
-
-    const t = translations[currentLanguage];
-
-    document.querySelector("nav a[href='#features']").textContent = t.features;
-    document.querySelector("nav a[href='#about']").textContent = t.about;
-    document.querySelector(".tag").textContent = t.tag;
-    document.querySelector(".hero h1").textContent = t.title;
-    document.querySelector(".hero > p").textContent = t.description;
-    document.querySelector(".primary-button").textContent = t.start;
-    document.querySelector(".secondary-button").textContent = t.learn;
-    document.querySelector(".features h2").textContent = t.section;
-
-    const cards = document.querySelectorAll(".card");
-    cards[0].querySelector("h3").textContent = t.ai;
-    cards[0].querySelector("p").textContent = t.aiText;
-    cards[1].querySelector("h3").textContent = t.community;
-    cards[1].querySelector("p").textContent = t.communityText;
-    cards[2].querySelector("h3").textContent = t.knowledge;
-    cards[2].querySelector("p").textContent = t.knowledgeText;
-
-    document.querySelector(".about h2").textContent = t.aboutTitle;
-    document.querySelector(".about p").textContent = t.aboutText;
-    document.getElementById("languageButton").textContent =
-        currentLanguage.toUpperCase();
+function openAI() {
+    document.getElementById("aiChat").hidden = false;
+    document.getElementById("features").hidden = true;
+    document.querySelector(".hero").hidden = true;
+    document.getElementById("aiChat").scrollIntoView({
+        behavior: "smooth"
+    });
 }
 
-function openAI() {
-    alert("AI Assistant is coming soon!");
+function closeAI() {
+    document.getElementById("aiChat").hidden = true;
+    document.getElementById("features").hidden = false;
+    document.querySelector(".hero").hidden = false;
 }
 
 function openCommunity() {
-    alert("Community chat is coming soon!");
+    alert(chatTexts[currentLanguage].community);
 }
 
 function openKnowledge() {
@@ -101,5 +58,100 @@ function openKnowledge() {
     });
 }
 
+function addMessage(sender, message) {
+    const container = document.getElementById("chatMessages");
+    const item = document.createElement("p");
+    const name = document.createElement("strong");
+
+    name.textContent = sender + ": ";
+    item.appendChild(name);
+    item.appendChild(document.createTextNode(message));
+
+    container.appendChild(item);
+    container.scrollTop = container.scrollHeight;
+
+    return item;
+}
+
+async function sendMessage(event) {
+    event.preventDefault();
+
+    const input = document.getElementById("chatInput");
+    const button = document.querySelector("#chatForm button");
+    const status = document.getElementById("chatStatus");
+
+    const message = input.value.trim();
+
+    if (!message) {
+        status.textContent = chatTexts[currentLanguage].empty;
+        return;
+    }
+
+    addMessage("You", message);
+    input.value = "";
+
+    const oldButtonText = button.textContent;
+    button.disabled = true;
+    button.textContent = "...";
+    status.textContent = chatTexts[currentLanguage].thinking;
+
+    try {
+        const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: message,
+                language: currentLanguage
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Request failed");
+        }
+
+        addMessage("AdalHelp AI", data.reply);
+        status.textContent = "";
+
+    } catch (error) {
+        status.textContent = chatTexts[currentLanguage].error;
+    } finally {
+        button.disabled = false;
+        button.textContent = oldButtonText;
+        input.focus();
+    }
+}
+
+function changeLanguage() {
+    const languages = ["en", "ru", "kz"];
+    const index = languages.indexOf(currentLanguage);
+
+    currentLanguage = languages[(index + 1) % languages.length];
+
+    document.getElementById("languageButton").textContent =
+        currentLanguage.toUpperCase();
+
+    document.getElementById("chatInput").placeholder =
+        chatTexts[currentLanguage].placeholder;
+
+    document.querySelector("#chatForm button").textContent =
+        chatTexts[currentLanguage].send;
+}
+
 document.getElementById("languageButton")
     .addEventListener("click", changeLanguage);
+
+document.getElementById("chatForm")
+    .addEventListener("submit", sendMessage);
+
+document.querySelector("#aiChat > button").textContent =
+    chatTexts[currentLanguage].back;
+
+document.getElementById("chatInput").placeholder =
+    chatTexts[currentLanguage].placeholder;
+
+document.querySelector("#chatForm button").textContent =
+    chatTexts[currentLanguage].send;
